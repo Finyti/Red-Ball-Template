@@ -7,8 +7,12 @@ public class Player : MonoBehaviour
     Rigidbody2D rb;
 
     public float jumpSpeed = 11f;
-    public float moveSpeed = 0.7f;
+    public float moveSpeed = 800f;
     public float maxSpeed = 7f;
+
+    public AudioClip jumpAudio;
+    public AudioClip coinAudio;
+
 
     void Start()
     {
@@ -24,7 +28,7 @@ public class Player : MonoBehaviour
         if(rb.velocity.x < maxSpeed && rb.velocity.x > -maxSpeed)
         {
             rb.drag = 1;
-            rb.AddForce(new Vector2(hor * moveSpeed, 0));
+            rb.AddForce(new Vector2(hor * moveSpeed * Time.deltaTime, 0));
         }
         else
         {
@@ -39,7 +43,10 @@ public class Player : MonoBehaviour
             if (Input.GetButtonDown("Jump"))
             {
                 rb.velocity += Vector2.up * jumpSpeed;
-
+                var source = GetComponent<AudioSource>();
+                source.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+                source.volume = 100f;
+                source.PlayOneShot(jumpAudio);
             }
         }
         
@@ -50,6 +57,7 @@ public class Player : MonoBehaviour
         if (collision.gameObject.name.Contains("Flag"))
         {
             GameManager.instance.Win();
+
         }
         if (collision.gameObject.name.Contains("Spike"))
         {
@@ -58,6 +66,10 @@ public class Player : MonoBehaviour
         if (collision.gameObject.name.Contains("Coin"))
         {
             GameManager.instance.CoinAdd(collision.gameObject);
+            var source = GetComponent<AudioSource>();
+            source.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+            source.volume = 100f;
+            source.PlayOneShot(coinAudio);
         }
     }
 }

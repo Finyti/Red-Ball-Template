@@ -25,6 +25,12 @@ public class GameManager : MonoBehaviour
     GameObject coinsEnumerator;
     public List<int> coinsMemory;
 
+    public AudioClip winAudio;
+    public AudioClip looseAudio;
+    public AudioClip minusLife;
+
+
+
     void Start()
     {
         if (instance == null)
@@ -60,10 +66,15 @@ public class GameManager : MonoBehaviour
         currentLevel++;
         if (currentLevel < levels.Count)
         {
-            SceneManager.LoadScene(levels[currentLevel]);
 
+            SceneManager.LoadScene(levels[currentLevel]);
+            var source = GetComponent<AudioSource>();
+            source.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+            source.volume = 100f;
+            source.PlayOneShot(winAudio);
             int number = Int32.Parse(coinsEnumerator.GetComponent<TextMeshPro>().text);
             coinsMemory.Add(number);
+
         }
         else
         {
@@ -79,6 +90,11 @@ public class GameManager : MonoBehaviour
 
         if (hp > 0)
         {
+            var source = GetComponent<AudioSource>();
+            source.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+            source.volume = 100f;
+            source.PlayOneShot(minusLife);
+
             Destroy(healthList[healthList.Count - 1]);
             healthList.RemoveAt(healthList.Count - 1);
 
@@ -88,6 +104,11 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            var source = GetComponent<AudioSource>();
+            DontDestroyOnLoad(source);
+            source.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+            source.volume = 100f;
+            source.PlayOneShot(looseAudio);
             SceneManager.LoadScene("LooseScene");
             Clear();
         }
