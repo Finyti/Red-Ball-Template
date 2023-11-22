@@ -52,6 +52,7 @@ public class Player : MonoBehaviour
         
 
     }
+    bool notDestroyed = false;
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.name.Contains("Flag"))
@@ -59,8 +60,9 @@ public class Player : MonoBehaviour
             GameManager.instance.Win();
 
         }
-        if (collision.gameObject.name.Contains("Spike"))
+        if (collision.gameObject.tag.Contains("Enemy") && !notDestroyed)
         {
+            notDestroyed = true;
             GameManager.instance.Loose();
         }
         if (collision.gameObject.name.Contains("Coin"))

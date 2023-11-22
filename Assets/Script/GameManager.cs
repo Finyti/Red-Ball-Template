@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
 
 
 
-    void Start()
+    void Awake()
     {
         if (instance == null)
         {
@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour
             source.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
             source.volume = 100f;
             source.PlayOneShot(winAudio);
+
             int number = Int32.Parse(coinsEnumerator.GetComponent<TextMeshPro>().text);
             coinsMemory.Add(number);
 
@@ -90,11 +91,11 @@ public class GameManager : MonoBehaviour
 
         if (hp > 0)
         {
-            var source = GetComponent<AudioSource>();
-            source.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
-            source.volume = 100f;
-            source.PlayOneShot(minusLife);
-
+            //var source = GetComponent<AudioSource>();
+            //source.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+            //source.volume = 100f;
+            //source.PlayOneShot(minusLife);
+            
             Destroy(healthList[healthList.Count - 1]);
             healthList.RemoveAt(healthList.Count - 1);
 
@@ -126,7 +127,7 @@ public class GameManager : MonoBehaviour
         }
         Destroy(healthBar);
         Destroy(coinsEnumerator);
-        Destroy(this);
+        Destroy(gameObject);
     }
 
     public void CoinAdd(GameObject coin)
